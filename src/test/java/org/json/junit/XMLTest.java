@@ -1116,19 +1116,19 @@ public class XMLTest {
                 xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
                 assert xmlStream != null;
                 Reader xmlStreamReader = new InputStreamReader(xmlStream);
-                JSONObject actual = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/book/1"));
-                String expectedOutput = "{\n" +
-                        "    \"author\": \"Ralls, Kim\",\n" +
-                        "    \"price\": 5.95,\n" +
-                        "    \"genre\": \"Fantasy\",\n" +
-                        "    \"description\": \"A former architect battles corporate zombies, \\n      an evil sorceress, and her own childhood to become queen \\n      of the world.\",\n" +
-                        "    \"id\": \"bk102\",\n" +
-                        "    \"title\": \"Midnight Rain\",\n" +
-                        "    \"publish_date\": \"2000-12-16\"\n" +
-                        "}";
+                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/book/1"));
+                assert actualJsonObject != null;
 
-                assert actual != null;
-                assertEquals(expectedOutput, actual.toString(4));
+                InputStream jsonStream = null;
+                try {
+                    jsonStream = XMLTest.class.getClassLoader().getResourceAsStream("booksQuery.json");
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                } finally {
+                    if (jsonStream != null) {
+                        jsonStream.close();
+                    }
+                }
             } finally {
                 if (xmlStream != null) {
                     xmlStream.close();
