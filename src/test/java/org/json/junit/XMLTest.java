@@ -41,13 +41,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.json.XML;
-import org.json.XMLParserConfiguration;
-import org.json.XMLXsiTypeConverter;
+import org.json.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -1069,4 +1063,37 @@ public class XMLTest {
             fail("Expected to be unable to modify the config");
         } catch (Exception ignored) { }
     }
+
+
+
+    /* Our Code Starts Here */
+//    @Test
+//    public void testToJSONObjectWithUpdatingSubJsonObject() {
+//        Util.compareActualVsExpectedJsonObjects();
+//    }
+
+    @Test
+    public void testToJSONObjectWithQueryPath() {
+        Reader InputStreamReader = new InputStreamReader(XMLTest.class.getClassLoader()
+                .getResourceAsStream("books.xml"));
+
+        JSONObject actual = XML.toJSONObject(InputStreamReader, new JSONPointer("/catalog/book/1"));
+
+        String expectOutput = "{\n" +
+                "    \"author\": \"Ralls, Kim\",\n" +
+                "    \"price\": 5.95,\n" +
+                "    \"genre\": \"Fantasy\",\n" +
+                "    \"description\": \"A former architect battles corporate zombies, \\n      an evil sorceress, and her own childhood to become queen \\n      of the world.\",\n" +
+                "    \"id\": \"bk102\",\n" +
+                "    \"title\": \"Midnight Rain\",\n" +
+                "    \"publish_date\": \"2000-12-16\"\n" +
+                "}";
+
+        assert actual != null;
+        assertEquals(actual.toString(4), expectOutput);
+    }
+
+
+
+    /* Our Code Ends Here */
 }

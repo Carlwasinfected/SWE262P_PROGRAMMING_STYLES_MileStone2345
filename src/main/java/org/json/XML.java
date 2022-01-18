@@ -24,6 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import javax.print.attribute.standard.JobName;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Method;
@@ -732,6 +733,89 @@ public class XML {
     public static JSONObject toJSONObject(String string, XMLParserConfiguration config) throws JSONException {
         return toJSONObject(new StringReader(string), config);
     }
+
+
+    /* Our Code Starts Here. */
+    public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException {
+        JSONObject rawJson = toJSONObject(reader);
+        Object result = path.queryFrom(rawJson);
+
+        if (result instanceof JSONObject) {
+            return (JSONObject) result;
+        }
+        else {
+            // Result is null or not JSONObject Type.
+            return null;
+        }
+    }
+
+
+    public static JSONObject toJSONObject(Reader reader, JSONPointer path, JSONObject replacement) throws JSONException{
+        if (toJSONObject(reader, path) != null) {
+            JSONObject rawJson = toJSONObject(reader);
+            return updateJsonObjectWithKeyString(rawJson, path.toString(), "", replacement);
+        }
+
+        return null;
+    }
+
+    private static JSONObject updateJsonObjectWithKeyString(JSONObject currentJson, String key,
+                                                            String pathPrefix, JSONObject replacement) {
+        // get current object's keys
+        Iterator iter = currentJson.keys();
+        String currentKey;
+        String globalKeyPath;
+        while (iter.hasNext()) {
+            currentKey = (String) iter.next();
+            globalKeyPath = pathPrefix + '/' + currentKey;
+
+            // check if match the key.
+            if (globalKeyPath.equals(key)) {
+                currentJson.put(currentKey, replacement);
+                // System.out.println("Match Hit." + globalKeyPath + "  " + currentKey + "  \n" + newObj);
+                return currentJson;
+            }
+
+            // expanding the nested structure.
+            if (currentJson.optJSONObject(currentKey) != null) {
+                updateJsonObjectWithKeyString(currentJson.getJSONObject(currentKey), key, globalKeyPath, replacement);
+            }
+
+            if (currentJson.optJSONArray(currentKey) != null) {
+                JSONArray arr = currentJson.getJSONArray(currentKey);
+                String[] paths = key.split("/");
+
+                // find the selected index
+                String[] pres = globalKeyPath.split("/");
+                for (int i = 1; i < paths.length; ++i) {
+                    if (paths[i-1].equals(pres[pres.length-1])) {
+                        // if has reached the end
+                        if (i == paths.length - 1) {
+                            arr.put(Integer.parseInt(paths[paths.length - 1]), replacement);
+                            // System.out.println("Match Hit at line 150.  " + globalKeyPath + "  " + currentKey + "  " + newObj);
+                            return currentJson;
+                        } else {
+                            if (paths[i].matches("[0-9]+")) {
+                                // update key path with array index
+                                int selectedIndex = Integer.parseInt(paths[i]);
+                                globalKeyPath = globalKeyPath + "/" + paths[i]; // update keypath properly
+                                // System.out.println("** updated global key path: " + globalKeyPath);
+                                updateJsonObjectWithKeyString(arr.getJSONObject(selectedIndex),
+                                        key, globalKeyPath, replacement);
+                            } else {
+                                throw new Error("unexpected reach.");
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return currentJson;
+    }
+
+    /* Our Code Ends Here. */
 
     /**
      * Convert a JSONObject into a well-formed, element-normal XML string.
