@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+//import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1067,33 +1068,115 @@ public class XMLTest {
 
 
     /* Our Code Starts Here */
-//    @Test
-//    public void testToJSONObjectWithUpdatingSubJsonObject() {
-//        Util.compareActualVsExpectedJsonObjects();
-//    }
+    @Test
+    public void testToJSONObjectWithUpdatingSubJsonObject() {
+        try {
+            InputStream xmlStream = null;
+
+            try {
+                xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
+                assert xmlStream != null;
+                Reader xmlReader = new InputStreamReader(xmlStream);
+                JSONObject newJsonObject = new JSONObject();
+                newJsonObject.put("author", "Carl Wang");
+                newJsonObject.put("price", 114514);
+                newJsonObject.put("genre", "Computer");
+                newJsonObject.put("description", "Replaced Old Json Object Test. ");
+                newJsonObject.put("id", "bk999");
+                newJsonObject.put("title", "Leetcode Book");
+                newJsonObject.put("publish_date", "2022-1-11");
+
+                JSONObject actualJsonObject = XML.toJSONObject(xmlReader, new JSONPointer("/catalog/book/1"), newJsonObject);
+                InputStream jsonStream = null;
+                try {
+                    jsonStream = XMLTest.class.getClassLoader().getResourceAsStream("booksReplaced.json");
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                } finally {
+                    if (jsonStream != null) {
+                        jsonStream.close();
+                    }
+                }
+            } finally {
+                if (xmlStream != null) {
+                    xmlStream.close();
+                }
+            }
+
+        } catch (IOException ignored) {
+
+        }
+    }
 
     @Test
     public void testToJSONObjectWithQueryPath() {
-        Reader InputStreamReader = new InputStreamReader(XMLTest.class.getClassLoader()
-                .getResourceAsStream("books.xml"));
+        try {
+            InputStream xmlStream = null;
+            try {
+                xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
+                assert xmlStream != null;
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actual = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/book/1"));
+                String expectedOutput = "{\n" +
+                        "    \"author\": \"Ralls, Kim\",\n" +
+                        "    \"price\": 5.95,\n" +
+                        "    \"genre\": \"Fantasy\",\n" +
+                        "    \"description\": \"A former architect battles corporate zombies, \\n      an evil sorceress, and her own childhood to become queen \\n      of the world.\",\n" +
+                        "    \"id\": \"bk102\",\n" +
+                        "    \"title\": \"Midnight Rain\",\n" +
+                        "    \"publish_date\": \"2000-12-16\"\n" +
+                        "}";
 
-        JSONObject actual = XML.toJSONObject(InputStreamReader, new JSONPointer("/catalog/book/1"));
+                assert actual != null;
+                assertEquals(expectedOutput, actual.toString(4));
+            } finally {
+                if (xmlStream != null) {
+                    xmlStream.close();
+                }
+            }
+        } catch (IOException ignored) {
 
-        String expectOutput = "{\n" +
-                "    \"author\": \"Ralls, Kim\",\n" +
-                "    \"price\": 5.95,\n" +
-                "    \"genre\": \"Fantasy\",\n" +
-                "    \"description\": \"A former architect battles corporate zombies, \\n      an evil sorceress, and her own childhood to become queen \\n      of the world.\",\n" +
-                "    \"id\": \"bk102\",\n" +
-                "    \"title\": \"Midnight Rain\",\n" +
-                "    \"publish_date\": \"2000-12-16\"\n" +
-                "}";
+        }
 
-        assert actual != null;
-        assertEquals(actual.toString(4), expectOutput);
     }
 
+    @Test
+    public void testToJsonObjectWithQueryPathResultDoesNotExist() {
+        try {
+            InputStream xmlStream = null;
+            try {
+                xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                //JSONObject actualNotJsonObject = XML.toJSONObject(InputStreamReader, new JSONPointer("/catalog/book/1/price"));
+                JSONObject actualNotExists = XML.toJSONObject(xmlStreamReader, new JSONPointer("/test"));
+                assert actualNotExists == null;
+            } finally {
+                if (xmlStream != null) {
+                    xmlStream.close();
+                }
+            }
+        } catch (Exception ignored) {
 
+        }
+    }
 
+    @Test
+    public void testToJsonObjectWithQueryPathResultNotJsonObjectType() {
+        try {
+            InputStream xmlStream = null;
+            try {
+                xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualNotJsonObject = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/book/1/price"));
+                assert actualNotJsonObject == null;
+            } finally {
+                if (xmlStream != null) {
+                    xmlStream.close();
+                }
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
     /* Our Code Ends Here */
 }
