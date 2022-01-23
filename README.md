@@ -1,9 +1,19 @@
 # SWE 262P MileStones
 *Team Members: Can Wang, Ruokun Xu*
 
-tbd 
+## Milestone 2
 
+In this project, we add two overload methods at `src/main/java/org/json/XML.java`. The two method signatures are as
+follows, the code starts at `line 753` and ends at `line 824`.
+- `public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException`
+- `public static JSONObject toJSONObject(Reader reader, JSONPointer path, JSONObject replacement) throws JSONException`
 
+The related JUnit tests are added at `src/main/test/java/.../XMLTest.java`, starting at `line 1070`.
+
+All added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
+
+---
+---
 ---
 
 ![Json-Java logo](https://github.com/stleary/JSON-java/blob/master/images/JsonJava.png?raw=true)
