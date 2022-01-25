@@ -1091,7 +1091,6 @@ public class XMLTest {
                 try {
                     jsonStream = XMLTest.class.getClassLoader().getResourceAsStream("booksReplaced.json");
                     final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
-                    System.out.println(expectedJsonObject.toString());
 
                     Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
                 } finally {

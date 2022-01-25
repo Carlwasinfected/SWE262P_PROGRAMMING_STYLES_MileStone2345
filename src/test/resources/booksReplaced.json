@@ -27,7 +27,7 @@
             "author": "Corets, Eva",
             "price": 5.95,
             "genre": "Fantasy",
-            "description": "After the collapse of a nanotechnology \n      society in England, the young survivors lay the \n      foundation for a new society.",
+            "description": "After the collapse of a nanotechnology\n            society in England, the young survivors lay the\n            foundation for a new society.",
             "id": "bk103",
             "title": "Maeve Ascendant",
             "publish_date": "2000-11-17"
@@ -36,7 +36,7 @@
             "author": "Corets, Eva",
             "price": 5.95,
             "genre": "Fantasy",
-            "description": "In post-apocalypse England, the mysterious \n      agent known only as Oberon helps to create a new life \n      for the inhabitants of London. Sequel to Maeve \n      Ascendant.",
+            "description": "In post-apocalypse England, the mysterious\n            agent known only as Oberon helps to create a new life\n            for the inhabitants of London. Sequel to Maeve\n            Ascendant.",
             "id": "bk104",
             "title": "Oberon's Legacy",
             "publish_date": "2001-03-10"
@@ -45,7 +45,7 @@
             "author": "Corets, Eva",
             "price": 5.95,
             "genre": "Fantasy",
-            "description": "The two daughters of Maeve, half-sisters, \n      battle one another for control of England. Sequel to \n      Oberon's Legacy.",
+            "description": "The two daughters of Maeve, half-sisters,\n            battle one another for control of England. Sequel to\n            Oberon's Legacy.",
             "id": "bk105",
             "title": "The Sundered Grail",
             "publish_date": "2001-09-10"
@@ -54,7 +54,7 @@
             "author": "Randall, Cynthia",
             "price": 4.95,
             "genre": "Romance",
-            "description": "When Carla meets Paul at an ornithology \n      conference, tempers fly as feathers get ruffled.",
+            "description": "When Carla meets Paul at an ornithology\n            conference, tempers fly as feathers get ruffled.",
             "id": "bk106",
             "title": "Lover Birds",
             "publish_date": "2000-09-02"
@@ -63,7 +63,7 @@
             "author": "Thurman, Paula",
             "price": 4.95,
             "genre": "Romance",
-            "description": "A deep sea diver finds true love twenty \n      thousand leagues beneath the sea.",
+            "description": "A deep sea diver finds true love twenty\n            thousand leagues beneath the sea.",
             "id": "bk107",
             "title": "Splish Splash",
             "publish_date": "2000-11-02"
@@ -72,7 +72,7 @@
             "author": "Knorr, Stefan",
             "price": 4.95,
             "genre": "Horror",
-            "description": "An anthology of horror stories about roaches,\n      centipedes, scorpions  and other insects.",
+            "description": "An anthology of horror stories about roaches,\n            centipedes, scorpions  and other insects.",
             "id": "bk108",
             "title": "Creepy Crawlies",
             "publish_date": "2000-12-06"
@@ -81,7 +81,7 @@
             "author": "Kress, Peter",
             "price": 6.95,
             "genre": "Science Fiction",
-            "description": "After an inadvertant trip through a Heisenberg\n      Uncertainty Device, James Salway discovers the problems \n      of being quantum.",
+            "description": "After an inadvertant trip through a Heisenberg\n            Uncertainty Device, James Salway discovers the problems\n            of being quantum.",
             "id": "bk109",
             "title": "Paradox Lost",
             "publish_date": "2000-11-02"
@@ -90,7 +90,7 @@
             "author": "O'Brien, Tim",
             "price": 36.95,
             "genre": "Computer",
-            "description": "Microsoft's .NET initiative is explored in \n      detail in this deep programmer's reference.",
+            "description": "Microsoft's .NET initiative is explored in\n            detail in this deep programmer's reference.",
             "id": "bk110",
             "title": "Microsoft .NET: The Programming Bible",
             "publish_date": "2000-12-09"
@@ -99,7 +99,7 @@
             "author": "O'Brien, Tim",
             "price": 36.95,
             "genre": "Computer",
-            "description": "The Microsoft MSXML3 parser is covered in \n      detail, with attention to XML DOM interfaces, XSLT processing, \n      SAX and more.",
+            "description": "The Microsoft MSXML3 parser is covered in\n            detail, with attention to XML DOM interfaces, XSLT processing,\n            SAX and more.",
             "id": "bk111",
             "title": "MSXML3: A Comprehensive Guide",
             "publish_date": "2000-12-01"
@@ -108,7 +108,7 @@
             "author": "Galos, Mike",
             "price": 49.95,
             "genre": "Computer",
-            "description": "Microsoft Visual Studio 7 is explored in depth,\n      looking at how Visual Basic, Visual C++, C#, and ASP+ are \n      integrated into a comprehensive development \n      environment.",
+            "description": "Microsoft Visual Studio 7 is explored in depth,\n            looking at how Visual Basic, Visual C++, C#, and ASP+ are\n            integrated into a comprehensive development\n            environment.",
             "id": "bk112",
             "title": "Visual Studio 7: A Comprehensive Guide",
             "publish_date": "2001-04-16"

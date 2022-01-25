@@ -747,9 +747,15 @@ public class XML {
         return toJSONObject(new StringReader(string), config);
     }
 
+    /* Our Code Starts here below */
 
-    /* --------------------------------- Milestone 2 ---------------------------------------- */
-    /* Our Code Starts Here. */
+    /**
+     *
+     * @param reader: reader object of the raw content
+     * @param path: the path to query
+     * @return: the sub json object given the path, return null if it does not exist
+     * @throws JSONException: throw Exception when error occurs
+     */
     public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException {
         return querySubJsonObject(reader, path);
     }
@@ -860,8 +866,8 @@ public class XML {
 
         System.out.println(subXMLResult);
         JSONObject subObject = toJSONObject(subXMLResult.toString());
-        System.out.println("\n\n-------------- JSONObject converted ------------");
-        System.out.println(subObject.toString(4));
+//        System.out.println("\n\n-------------- JSONObject converted ------------");
+//        System.out.println(subObject.toString(4));
         return subObject;
     }
 
