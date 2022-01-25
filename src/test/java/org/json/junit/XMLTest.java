@@ -1066,7 +1066,7 @@ public class XMLTest {
     }
 
 
-
+    /* --------------------------------- Milestone 2 ---------------------------------------- */
     /* Our Code Starts Here */
     @Test
     public void testToJSONObjectWithUpdatingSubJsonObject() {
@@ -1091,6 +1091,8 @@ public class XMLTest {
                 try {
                     jsonStream = XMLTest.class.getClassLoader().getResourceAsStream("booksReplaced.json");
                     final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    System.out.println(expectedJsonObject.toString());
+
                     Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
                 } finally {
                     if (jsonStream != null) {
@@ -1116,8 +1118,10 @@ public class XMLTest {
                 xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
                 assert xmlStream != null;
                 Reader xmlStreamReader = new InputStreamReader(xmlStream);
-                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/book/1"));
+                // /catalog/book/1
+                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, new JSONPointer("/catalog/profile"));
                 assert actualJsonObject != null;
+
 
                 InputStream jsonStream = null;
                 try {
