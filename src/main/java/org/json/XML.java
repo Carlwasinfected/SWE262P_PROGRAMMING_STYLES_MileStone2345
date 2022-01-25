@@ -747,6 +747,9 @@ public class XML {
         return toJSONObject(new StringReader(string), config);
     }
 
+
+    /***************   SWE 262 P MileStones ****************/
+
     /* Our Code Starts here below */
 
     /**
@@ -788,11 +791,11 @@ public class XML {
                                 if (isEndOfArray)
                                     isEndOfArray = false;
 
-                                // only want the line string from the tag that equals last key
-                                if (keyIndex == keyCount - 1) {
-                                    currentLineString = "<" + currentLineString;
-                                    tags.add(currentLineString);
-                                }
+//                                // only want the line string from the tag that equals last key
+//                                if (keyIndex == keyCount - 1) {
+//                                    currentLineString = "<" + currentLineString;
+//                                    tags.add(currentLineString);
+//                                }
 
                                 if (keyIndex < keyCount - 1) {  // orl: keyIndex == 0
                                     keyIndex++;
@@ -826,11 +829,11 @@ public class XML {
                             }  // end if-elseif-else
                         } else {
                             // has reached sub json given
-
                             currentLineString = "<" + currentLineString;
                             tags.add(currentLineString);
                             System.out.println("HITHITHITHITHIT@@@@@@@@@@@@@@@@");
                             System.out.println("*&&&&  " + currentLineString.charAt(0));
+
 
                             // post-process check
                             if (currentLineString.charAt(1) == '/') {
@@ -841,6 +844,7 @@ public class XML {
                                 if (currentCloseTagName.equals(rootTagName)) {
                                     // met close tag of the root tag of sub json
                                     System.out.println("please hit here");
+                                    tags.remove(tags.size()-1);  // pop out the root tag
                                     break;
                                 }
                             }
@@ -860,9 +864,9 @@ public class XML {
 
         // merge result to sub xml string
         final StringBuilder subXMLResult = new StringBuilder();
-        tags.stream().forEach(
-                s -> subXMLResult.append(s)
-        );
+        for(String now : tags) {
+            subXMLResult.append(now);
+        }
 
         System.out.println(subXMLResult);
         JSONObject subObject = toJSONObject(subXMLResult.toString());

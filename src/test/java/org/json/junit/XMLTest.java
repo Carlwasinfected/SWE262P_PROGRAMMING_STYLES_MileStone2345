@@ -1181,5 +1181,23 @@ public class XMLTest {
 
         }
     }
+
+
+    @Test
+    public void justTest() {
+        JSONPointer ptr = new JSONPointer("/catalog/profile");
+        InputStream xmlStream = null;
+        try {
+            xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml");
+            InputStreamReader xmlReader = new InputStreamReader(xmlStream);
+            JSONObject raw = XML.toJSONObject(xmlReader);
+            JSONObject result = (JSONObject) ptr.queryFrom(raw);
+            System.out.println(result.toString(4));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /* Our Code Ends Here */
 }
