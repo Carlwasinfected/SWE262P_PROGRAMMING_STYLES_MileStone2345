@@ -21,7 +21,9 @@ The building framework we use is `Maven`, so the build script file is `src/pom.x
 All four added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
 
 
-Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).
+*PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).        - Brs, Can*
+
+
 
 ---
 ---
