@@ -1,5 +1,5 @@
 # SWE 262P MileStones
-*Team Members: [Can Wang](mailto:canw7@uci.edu), Ruokun Xu*
+*Team Members: [Can Wang](mailto:canw7@uci.edu), [Ruokun Xu](mailto:ruokunx@uci.edu)*
 
 ## Milestone 2
 
