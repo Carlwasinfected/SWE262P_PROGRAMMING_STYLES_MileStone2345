@@ -753,11 +753,10 @@ public class XML {
     /* Our Code Starts here below */
 
     /**
-     *
      * @param reader: reader object of the raw content
-     * @param path: the path to query
-     * @return: the sub json object given the path, return null if it does not exist
+     * @param path:   the path to query
      * @throws JSONException: throw Exception when error occurs
+     * @return: the sub json object given the path, return null if it does not exist
      */
     public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException {
         return querySubJsonObject(reader, path);
@@ -768,9 +767,8 @@ public class XML {
         String rootTagName = keys[keys.length - 1];  // last word
         int keyIndex = 0;      // stop parsing when keyIndex = keyCount
         int keyCount = keys.length;
-        boolean isEndOfArray = false;
         boolean hasReachedSubJson = false;
-        List<String> tags = new ArrayList<>();
+        List<String> tags = new ArrayList<String>();  // note that diamond op is not available in Java 1.6
 
         XMLTokener token = new XMLTokener(reader);
         while (token.more()) {
@@ -779,48 +777,29 @@ public class XML {
                 Object currentLine = token.nextContent();
                 if (currentLine instanceof String) {
                     String currentLineString = (String) currentLine;
-                    System.out.println(currentLineString + "  ," + keyIndex + "  ," + keyCount + "  ," + keys[keyIndex]);
-                    System.out.println(tags);
-                    System.out.println();
 
                     if ((currentLineString.charAt(0) != '?' && currentLineString.charAt(0) != '!')) {
                         if (!hasReachedSubJson) {
-                            // 1. met start tag
+                            // 2.1. met start tag
                             if (keys[keyIndex].equals(currentLineString.substring(0, keys[keyIndex].length()))) {
-                                // meh it was false alarm, set the isEndOfArray to false and continue
-                                if (isEndOfArray)
-                                    isEndOfArray = false;
-
-//                                // only want the line string from the tag that equals last key
-//                                if (keyIndex == keyCount - 1) {
-//                                    currentLineString = "<" + currentLineString;
-//                                    tags.add(currentLineString);
-//                                }
 
                                 if (keyIndex < keyCount - 1) {  // orl: keyIndex == 0
                                     keyIndex++;
                                 } else {
-                                    // When keyIndex == keyCount - 1
-                                    // start query  inside of subjson object
+                                    // When keyIndex == keyCount - 1, and the key matches
+                                    // we query the inside of sub json for the next iteration
                                     hasReachedSubJson = true;
-
                                 }
                             } else if (currentLineString.charAt(0) == '/' &&
                                     keys[keyIndex].equals(currentLineString.substring(1, keys[keyIndex].length() + 1))) {
                                 // 2. met close tag
 
-                                isEndOfArray = true;
-
-                                // only want the line string from the tag that equals last key
                                 if (keyIndex == keyCount - 1) {
                                     currentLineString = "<" + currentLineString;
                                     tags.add(currentLineString);
                                     break;
                                 }
                             } else {
-
-                                if (isEndOfArray)
-                                    keyIndex++;
 
                                 if (keyIndex == keyCount - 1) {
                                     currentLineString = "<" + currentLineString;
@@ -831,20 +810,15 @@ public class XML {
                             // has reached sub json given
                             currentLineString = "<" + currentLineString;
                             tags.add(currentLineString);
-                            System.out.println("HITHITHITHITHIT@@@@@@@@@@@@@@@@");
-                            System.out.println("*&&&&  " + currentLineString.charAt(0));
 
 
                             // post-process check
                             if (currentLineString.charAt(1) == '/') {
                                 String currentCloseTagName = currentLineString.substring(2, currentLineString.length() - 1);
 
-                                System.out.println("HITHITHITHITHIT***********  " + currentCloseTagName);
-
                                 if (currentCloseTagName.equals(rootTagName)) {
                                     // met close tag of the root tag of sub json
-                                    System.out.println("please hit here");
-                                    tags.remove(tags.size()-1);  // pop out the root tag
+                                    tags.remove(tags.size() - 1);  // pop out the root tag
                                     break;
                                 }
                             }
@@ -852,27 +826,23 @@ public class XML {
                     }
                 }
 
-                System.out.println("-----------");
             }
         }
 
-        System.out.println("final tags: " + tags);
-
         if (!hasReachedSubJson) {
+            // tag does not exist given the path
+            // or the result is not a json object type
             return null;
         }
 
         // merge result to sub xml string
         final StringBuilder subXMLResult = new StringBuilder();
-        for(String now : tags) {
+        for (String now : tags) {
             subXMLResult.append(now);
         }
 
-        System.out.println(subXMLResult);
-        JSONObject subObject = toJSONObject(subXMLResult.toString());
-//        System.out.println("\n\n-------------- JSONObject converted ------------");
-//        System.out.println(subObject.toString(4));
-        return subObject;
+        // convert plain XML content string to json object
+        return toJSONObject(subXMLResult.toString());
     }
 
 

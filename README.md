@@ -1,16 +1,27 @@
 # SWE 262P MileStones
-*Team Members: Can Wang, Ruokun Xu*
+*Team Members: [Can Wang](mailto:canw7@uci.edu), Ruokun Xu*
 
 ## Milestone 2
 
-In this project, we add two overload methods at `src/main/java/org/json/XML.java`. The two method signatures are as
-follows, the code starts at `line 753` and ends at `line 824`.
+In this project, we add two overload methods at `src/main/java/org.json/XML.java`. The two method signatures are as
+follows, the code starts at `line 751` and ends at `line 905`.
 - `public static JSONObject toJSONObject(Reader reader, JSONPointer path) throws JSONException`
 - `public static JSONObject toJSONObject(Reader reader, JSONPointer path, JSONObject replacement) throws JSONException`
 
-The related JUnit tests are added at `src/main/test/java/.../XMLTest.java`, starting at `line 1070`.
-
+The related four JUnit tests we wrote are added at `src/test/java/org.json.junit/XMLTest.java`, 
+starting at `line 1069` and ending at `line1185`. The static resource files for testing are at `src/test/resources/`.
 All added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
+
+Regarding the time performance, our improvement is when the user would like to query the sub Json object given a specific path,
+the function will break and return early once it finishes the whole parsing process of that sub Json object, instead of
+continuing until reach the very end of the whole input.
+
+The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
+
+All four added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
+
+
+Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).
 
 ---
 ---
