@@ -26,16 +26,17 @@ The related three JUnit tests we wrote are added at `src/test/java/org.json.juni
 starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/`.
 All added test cases have been already been verified correctly.
 
-Regarding the time performance, our improvement is when the user would like to set a string representing a key as input, 
-and returns another string transformed as a key.
+The function we wrote is to receive a specific string transformer pattern as input from client's code, 
+and returns strings transformed as new keys correspondingly.
 
-Compare with doing this inside the library, doing it in client code has the benefit to parse and modify keys simultaneously.
-We do not need to parse the entire XML file to JSON file then modify the keys. Our function just needs one pass modification.
+Regarding the time performance, compared with milestone 1, doing the task inside the library is a `One-Pass` solution,
+meaning that the function is able to finish the parsing and transferring process by using only one loop, while the solution
+we used in milestone 1 is a classic `Two-Pass` solution.
 
 The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
 
 
-*PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).        - Brs, Can*
+*PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).- Brs, Can*
 
 
 
