@@ -34,6 +34,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 
 /**
@@ -748,7 +750,7 @@ public class XML {
     }
 
 
-    /***************   SWE 262 P MileStones ****************/
+    /***************   SWE 262 P MileStone 2 ****************/
 
     /* Our Code Starts here below */
 
@@ -902,6 +904,65 @@ public class XML {
 
         return currentJson;
     }
+
+    /***************   SWE 262 P MileStone 3 ****************/
+    public static JSONObject toJSONObject(Reader reader, Function<String, String> keyTransformer) {
+        List<String> rawContent = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        Function<String, String> toNewContent = old -> keyTransformer.apply(old);
+
+        XMLTokener x = new XMLTokener(reader);
+        while (x.more()) {
+            x.skipPast("<");
+            if (x.more()) {
+                Object currentLine = x.nextContent();
+                if (currentLine instanceof String) {
+                    String currentLineString = (String) currentLine;  // valid content
+                    if (currentLineString.charAt(0) != '?' && currentLineString.charAt(0) != '!') {
+                        // filtering, only keep those with begin or close tags
+                        sb.append("<");
+                        if (currentLineString.charAt(0) == '/') {
+                            // met close tag, content format: "/{CLOSE_TAG_NAME}>"
+                            // eg., "/author>"
+                            sb.append('/');
+                            sb.append(toNewContent.apply(currentLineString.substring(1, currentLineString.length()-1)));
+                            sb.append('>');
+                        } else {
+                            // meg begin tag, content format: "{BEGIN_TAG_NAME}>{CONTENT}"
+                            int beginIndex = 0;
+                            int endIndex = currentLineString.indexOf(">");
+                            if (currentLineString.substring(beginIndex, endIndex).contains("id=")) {
+                                // for test case "books.xml":
+                                // if there is a variable {id} in the starting tag, it needs to be transformed as well.
+                                // eg., "book id="bk102">"
+                                endIndex = currentLineString.indexOf("id=")-1; // the end ch is 'k'
+                                sb.append(toNewContent.apply(currentLineString.substring(beginIndex, endIndex)));
+                                sb.append(' ');
+                                sb.append(toNewContent.apply("id"));
+                                sb.append(currentLineString.substring(currentLineString.indexOf("id=") + 2));
+                            } else {
+                                // eg., "title>Midnight Rain"
+                                sb.append(toNewContent.apply(currentLineString.substring(beginIndex, endIndex)));
+                                sb.append(currentLineString.substring(endIndex));
+                            } // end if-else
+                        } // end if-else
+
+                        rawContent.add(sb.toString());
+                        sb.setLength(0); // reset
+                    }
+                }
+            }
+        }
+
+        // reconstruct the xml file
+        for (String raw : rawContent) {
+            sb.append(raw);
+        }
+
+        return toJSONObject(sb.toString());
+    }
+
+
 
     /* Our Code Ends Here. */
 

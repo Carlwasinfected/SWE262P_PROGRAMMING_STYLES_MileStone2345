@@ -39,8 +39,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 //import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 import org.json.*;
 import org.junit.Rule;
@@ -1187,6 +1187,76 @@ public class XMLTest {
 
         }
     }
+
+
+    @Test
+    public void testToJSONObjectWithAllKeysReversed() {
+        Function<String, String> trans = s -> new StringBuilder(s).reverse().toString();
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, trans);
+
+                try (InputStream jsonStream = XMLTest.class.getClassLoader().getResourceAsStream(
+                        "booksKeysReversed.json")) {
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                }
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    @Test
+    public void testToJSONObjectWithAllKeysAddPrefixSWE262_() {
+        Function<String, String> trans = s -> "swe262_" + s;
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                assert xmlStream != null;
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, trans);
+
+                try (InputStream jsonStream = XMLTest.class.getClassLoader().getResourceAsStream(
+                        "booksKeysAddPrefix.json")) {
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                }
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+
+    @Test
+    public void testToJSONObjectWithAllKeysSortedAlphaBetically() {
+        Function<String, String> trans = s -> {
+            char[] arr = s.toCharArray();
+            Arrays.sort(arr);
+            return new String(arr);
+        };
+
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                assert xmlStream != null;
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualJsonObject = XML.toJSONObject(xmlStreamReader, trans);
+
+                try (InputStream jsonStream = XMLTest.class.getClassLoader().getResourceAsStream(
+                        "booksKeysAllSorted.json")) {
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                }
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
 
     /* Our Code Ends Here */
 }
