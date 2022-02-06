@@ -16,9 +16,23 @@ Regarding the time performance, our improvement is when the user would like to q
 the function will break and return early once it finishes the whole parsing process of that sub Json object, instead of
 continuing until reach the very end of the whole input.
 
-The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
+## Milestone 3
 
-All four added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
+In this project, we add two overload methods at `src/main/java/org.json/XML.java`. The method signatures are as
+follows, the code starts at `line 909` and ends at `line 963`.
+- `public static JSONObject toJSONObject(Reader reader, Function<String, String> keyTransformer)`
+
+The related three JUnit tests we wrote are added at `src/test/java/org.json.junit/XMLTest.java`,
+starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/`.
+All added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
+
+Regarding the time performance, our improvement is when the user would like to set a string representing a key as input, 
+and returns another string transformed as a key.
+
+Compare with doing this inside the library, doing it in client code has the benefit to parse and modify keys simultaneously.
+We do not need to parse the entire XML file to JSON file then modify the keys. Our function just needs one pass modification.
+
+The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
 
 
 *PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).        - Brs, Can*
