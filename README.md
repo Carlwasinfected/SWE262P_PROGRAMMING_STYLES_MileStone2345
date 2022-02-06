@@ -23,20 +23,16 @@ follows, the code starts at `line 909` and ends at `line 963`.
 - `public static JSONObject toJSONObject(Reader reader, Function<String, String> keyTransformer)`
 
 The related three JUnit tests we wrote are added at `src/test/java/org.json.junit/XMLTest.java`,
-starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/`.
+starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/*`.
 All added test cases have been already been verified correctly.
 
-<<<<<<< HEAD
 The function we wrote is to receive a specific string transformer pattern as input from client's code, 
 and returns strings transformed as new keys correspondingly.
 
 Regarding the time performance, compared with milestone 1, doing the task inside the library is a `One-Pass` solution,
 meaning that the function is able to finish the parsing and transferring process by using only one loop, while the solution
 we used in milestone 1 is a classic `Two-Pass` solution.
-=======
-Compare with doing this in client code, doing it inside the library has the benefit to parse and modify keys simultaneously.
-We do not need to parse the entire XML file to JSON file then modify the keys. Our function just needs one pass modification.
->>>>>>> 00d5e7e0e9bfd6b7900d51f6cf9642dd57ad4a5c
+
 
 The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
 
@@ -49,7 +45,7 @@ The building framework we use is `Maven`, so the build script file is `src/pom.x
 
 
 
-*-----  Our README ends here-------*
+*-----  Our README ends here  -------*
 
 ---
 ---
