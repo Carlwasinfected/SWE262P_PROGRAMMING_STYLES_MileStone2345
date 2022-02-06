@@ -24,7 +24,6 @@ follows, the code starts at `line 909` and ends at `line 963`.
 
 The related three JUnit tests we wrote are added at `src/test/java/org.json.junit/XMLTest.java`,
 starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/`.
-All added test cases have been already been verified correctly and the code has passed the CI process on GitHub.
 
 Regarding the time performance, our improvement is when the user would like to set a string representing a key as input, 
 and returns another string transformed as a key.
