@@ -26,10 +26,7 @@ The related three JUnit tests we wrote are added at `src/test/java/org.json.juni
 starting at `line 1192` and ending at `line 1258`. The static resource files for testing are at `src/test/resources/`.
 All added test cases have been already been verified correctly.
 
-Regarding the time performance, our improvement is when the user would like to set a string representing a key as input, 
-and returns another string transformed as a key.
-
-Compare with doing this inside the library, doing it in client code has the benefit to parse and modify keys simultaneously.
+Compare with doing this in client code, doing it inside the library has the benefit to parse and modify keys simultaneously.
 We do not need to parse the entire XML file to JSON file then modify the keys. Our function just needs one pass modification.
 
 The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
