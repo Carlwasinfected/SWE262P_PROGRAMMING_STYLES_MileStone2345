@@ -34,30 +34,16 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.json.CDL;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONPointerException;
-import org.json.JSONTokener;
-import org.json.XML;
+import org.json.*;
 import org.json.junit.data.BrokenToString;
 import org.json.junit.data.ExceptionalBean;
 import org.json.junit.data.Fraction;
@@ -3351,4 +3337,76 @@ public class JSONObjectTest {
         assertTrue("expected jsonObject.length() == 0", jsonObject.length() == 0); //Check if its length is 0
         jsonObject.getInt("key1"); //Should throws org.json.JSONException: JSONObject["asd"] not found
     }
+
+
+    /***************   SWE 262 P MileStone 4  Our Code Starts Here ****************/
+    @Test
+    public void testStreamObjectSize() {
+        JSONObject obj = XML.toJSONObject("<Books>" +
+                "<book><title>AAA</title><author>ASmith</author></book>" +
+                "<book><title>BBB</title><author>BSmith</author></book>" +
+                "</Books>");
+        int expectCountResult = 4;
+        assertEquals(expectCountResult, obj.toStream().count());
+    }
+
+
+    @Test
+    public void testStreamObjectFilter() {
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualJSONObject = XML.toJSONObject(xmlStreamReader);
+                final String EXPECTED_ID_VAL = "bk112";
+
+                List<Object> acutalIDList = actualJSONObject.toStream()
+                        .filter(node -> ((HashMap) node).keySet().toString().contains("/catalog/book"))
+                        .filter(node -> ((HashMap) node).keySet().toString().contains("id"))
+                        .collect(Collectors.toList());
+
+                String key = "/catalog/book/" + (acutalIDList.size() - 1) + "/id";
+                final String ACTUAL_ID_VAL = ((HashMap) acutalIDList.get(acutalIDList.size()-1)).get(key).toString();
+                assertEquals(EXPECTED_ID_VAL, ACTUAL_ID_VAL);
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    @Test
+    public void testStreanObjectIteration() {
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                JSONObject actualJSONObject = XML.toJSONObject(xmlStreamReader);
+                final String EXPECTED_ENTRYS = "[/catalog/book/0/price=44.95]\n" +
+                        "[/catalog/book/1/price=5.95]\n" +
+                        "[/catalog/book/2/price=5.95]\n" +
+                        "[/catalog/book/3/price=5.95]\n" +
+                        "[/catalog/book/4/price=5.95]\n" +
+                        "[/catalog/book/5/price=4.95]\n" +
+                        "[/catalog/book/6/price=4.95]\n" +
+                        "[/catalog/book/7/price=4.95]\n" +
+                        "[/catalog/book/8/price=6.95]\n" +
+                        "[/catalog/book/9/price=36.95]\n" +
+                        "[/catalog/book/10/price=36.95]\n" +
+                        "[/catalog/book/11/price=49.95]\n";
+
+                StringBuilder sb = new StringBuilder();
+                actualJSONObject.toStream()
+                        .filter(node -> ((HashMap) node).keySet().toString().contains("/catalog/book"))
+                        .filter(node -> ((HashMap) node).keySet().toString().contains("price"))
+                        .forEach(
+                                node -> sb.append(((HashMap) node).entrySet()).append('\n')
+                        );
+
+                assertEquals(EXPECTED_ENTRYS, sb.toString());
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    /***************   SWE 262 P MileStone 4  Our Code Ends Here ****************/
+
 }

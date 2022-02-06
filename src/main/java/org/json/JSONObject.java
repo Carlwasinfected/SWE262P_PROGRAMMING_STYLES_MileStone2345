@@ -48,6 +48,7 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external
@@ -2722,4 +2723,61 @@ public class JSONObject {
             "JavaBean object contains recursively defined member variable of key " + quote(key)
         );
     }
+
+
+    private final Stream.Builder<Object> builder = Stream.builder();
+
+    /***************   SWE 262 P MileStone 4  Our Code Starts Here ****************/
+    public Stream<Object> toStream() {
+        for(Entry<String, Object> item: this.map.entrySet()) {
+            if (item.getValue() instanceof JSONObject || item.getValue() instanceof JSONArray) {
+                // current val has nested fields inside
+                streamBuilderHelper("/" + item.getKey(), item.getValue());
+            } else if (item.equals(NULL)) {
+                builder.add(null);
+            } else {
+                // simple <K,V>, value is string or number type
+                Map<String, Object> map = new HashMap<>();
+                map.put("/" + item.getKey(), item.getValue());
+                builder.add(map);
+            }
+
+        }
+        return builder.build();
+    }
+
+    private void streamBuilderHelper(String preKey, Object val) {
+        if (val instanceof JSONArray) {
+            // type is JSONArray
+            int currentIndex = 0;
+
+            for (Object currentObject : (JSONArray) val) {
+                if (currentObject instanceof JSONObject || currentObject instanceof JSONArray) {
+                    // keep recursion
+                    streamBuilderHelper(preKey + "/" + currentIndex, currentObject);
+                } else {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(preKey + "/" + currentIndex, currentObject);
+                    builder.add(map);
+                }
+                currentIndex++;
+            }
+        } else {
+            // type is JSONObject
+            Set<Entry<String, Object>> items = ((JSONObject) val).entrySet();
+            for (Entry<String, Object> item : items) {
+                if (item.getValue() instanceof JSONObject || item.getValue() instanceof JSONArray) {
+                    // keep recursion
+                    streamBuilderHelper(preKey + "/" + item.getKey(), item.getValue());
+                } else {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(preKey + "/" + item.getKey(), item.getValue());
+                    builder.add(map);
+                }
+            }
+        }
+    }
+
+    /***************   SWE 262 P MileStone 4  Our Code Ends Here ****************/
+
 }
