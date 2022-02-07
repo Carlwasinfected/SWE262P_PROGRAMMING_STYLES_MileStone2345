@@ -24,12 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -40,12 +34,16 @@ import java.io.Reader;
 import java.io.StringReader;
 //import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.json.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -1258,6 +1256,66 @@ public class XMLTest {
     }
 
     /***************   SWE 262 P MileStone 3  Our Code Ends Here ****************/
+
+
+
+    /***************   SWE 262 P MileStone 5 Our Code Starts Here ****************/
+    // test exceptionHandler works correctly
+    @Test
+    public void testTransformJSONObjectKeyAsynExceptionHandler() {
+        try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+            Consumer<Exception> exceptionHandler = (e) -> System.out.println("Work correctly due to exception thrown with keyTransformer as null.");
+            Reader xmlStreamReader = new InputStreamReader(xmlStream);
+            Future<JSONObject> actual = XML.toJSONObject(xmlStreamReader, null, exceptionHandler);
+            assertNull(actual);
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    // test method return correct result as expectation.
+    @Test
+    public void testTransformJSONObjectKeyAsyn() {
+        Function<String, String> trans = s -> "swe262_" + s;
+        Consumer<Exception> exceptionHandler = (e) -> e.printStackTrace();
+        try {
+            try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+                assert xmlStream != null;
+                Reader xmlStreamReader = new InputStreamReader(xmlStream);
+                Future<JSONObject> actual = XML.toJSONObject(xmlStreamReader, trans, exceptionHandler);
+                JSONObject actualJsonObject = actual.get();
+
+                try (InputStream jsonStream = XMLTest.class.getClassLoader().getResourceAsStream(
+                        "booksKeysAddPrefix.json")) {
+                    final JSONObject expectedJsonObject = new JSONObject(new JSONTokener(jsonStream));
+                    Util.compareActualVsExpectedJsonObjects(actualJsonObject, expectedJsonObject);
+                }
+                xmlStreamReader.close();
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    // test futureActual.get() will return a JSONObject
+    @Test
+    public void testTransformJSONObjectKeyAsynGetType() {
+        Function<String, String> trans = s -> "swe262_" + s;
+        Consumer<Exception> exceptionHandler = (e) -> e.printStackTrace();
+        try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
+            assert xmlStream != null;
+            Reader xmlStreamReader = new InputStreamReader(xmlStream);
+            Future<JSONObject> actual = XML.toJSONObject(xmlStreamReader, trans, exceptionHandler);
+            JSONObject actualJsonObject = actual.get();
+
+            assertTrue(actualJsonObject instanceof JSONObject);
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    /***************   SWE 262 P MileStone 5  Our Code Ends Here ****************/
+
 
     /* Our Code Ends Here */
 }

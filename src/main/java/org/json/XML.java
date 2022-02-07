@@ -34,6 +34,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -962,7 +966,35 @@ public class XML {
         return toJSONObject(sb.toString());
     }
 
+    /***************   SWE 262 P MileStone 5 ****************/
+    private static class FutureObject {
+        private ExecutorService executor = Executors.newSingleThreadExecutor();
 
+        public Future<JSONObject> toJSONObject(Reader reader, Function keyTransformer) throws Exception {
+            return executor.submit(() -> {
+                return XML.toJSONObject(reader, keyTransformer);
+            });
+        }
+
+        public void stopFuture() {
+            executor.shutdown();
+        }
+    }
+
+    public static Future<JSONObject> toJSONObject(Reader reader, Function<String, String> keyTransformer, Consumer<Exception> exceptionHandler) throws Exception {
+        FutureObject futureJsonObject = new FutureObject();
+        Future<JSONObject> future = null;
+        if (keyTransformer == null) {
+            exceptionHandler.accept(new Exception());
+            return null;
+        }
+        future = futureJsonObject.toJSONObject(reader, keyTransformer);
+
+        if (future.isDone()) {
+            futureJsonObject.stopFuture();
+        }
+        return future;
+    }
 
     /* Our Code Ends Here. */
 
