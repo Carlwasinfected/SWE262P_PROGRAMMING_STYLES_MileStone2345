@@ -37,13 +37,30 @@ we used in milestone 1 is a classic `Two-Pass` solution.
 The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
 
 
+
+
+
+## Milestone 4
+
+In this section, we add two functions to parse and build the JSONObject as a stream. The method signatures are as follows,
+the code is at `src/main/java/org/json/JSONObject.java`, starting at  `line 2730` and ending at `line 2781`.
+- `public Stream<Object> toStream()`  given a JSONObject, turn it into a stream
+- `private void streamBuilderHelper(String preKey, Object val)` given the previous path, parse and add each new object 
+of the current path into the stream builder recursively.
+
+In our implementation, each element in the stream is a `HashMap<String, Object> Object`, the key is the string 
+indicating the current path of the value, and the value is the actual object correspondingly. Our function also supports
+the parsing of `JSONObject` and `JSONArray` by calling another new function recursively if needed.
+
+The related JUnit tests we wrote are located at `src/test/java/org.json.junit/JSONObjectTest.java`, starting at `line 1192` 
+and ending at `line 1258`. The static resource files for testing are at `src/test/resources/*`. All added test cases have 
+already been verified correctly.
+
+
+The building framework we used is `Maven` and the build script file is located at `src/pom.xml`.
+
+
 *PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).- Brs, Can*
-
-
-
-
-
-
 
 *-----  Our README ends here  -------*
 

@@ -3374,7 +3374,7 @@ public class JSONObjectTest {
     }
 
     @Test
-    public void testStreanObjectIteration() {
+    public void testStreamObjectIteration() {
         try {
             try (InputStream xmlStream = XMLTest.class.getClassLoader().getResourceAsStream("books.xml")) {
                 Reader xmlStreamReader = new InputStreamReader(xmlStream);
