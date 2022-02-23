@@ -2743,7 +2743,7 @@ public class JSONObject {
             }
 
         }
-        return builder.build();
+        return builder.build();  // Note that: build-in build() method will return a Stream<Object> Object
     }
 
     private void streamBuilderHelper(String preKey, Object val) {

@@ -44,7 +44,8 @@ The building framework we use is `Maven`, so the build script file is `src/pom.x
 
 In this section, we add two functions to parse and build the JSONObject as a stream. The method signatures are as follows,
 the code is at `src/main/java/org/json/JSONObject.java`, starting at  `line 2730` and ending at `line 2781`.
-- `public Stream<Object> toStream()`  given a JSONObject, turn it into a stream
+- `public Stream<Object> toStream()`  given a `JSONObject`, turn it into a stream. Note that we used `StreamBuilder` to create
+the stream, so the return type is `Stream<Object>`. When using it, we need to cast it to `HashMap` firstly.
 - `private void streamBuilderHelper(String preKey, Object val)` given the previous path, parse and add each new object 
 of the current path into the stream builder recursively.
 
