@@ -981,7 +981,8 @@ public class XML {
         }
     }
 
-    public static Future<JSONObject> toJSONObject(Reader reader, Function<String, String> keyTransformer, Consumer<Exception> exceptionHandler) throws Exception {
+    public static Future<JSONObject> toJSONObject(Reader reader, Function<String, String> keyTransformer,
+                                                  Consumer<Exception> exceptionHandler) throws Exception {
         FutureObject futureJsonObject = new FutureObject();
         Future<JSONObject> future = null;
         if (keyTransformer == null) {

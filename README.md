@@ -40,21 +40,22 @@ The building framework we use is `Maven`, so the build script file is `src/pom.x
 
 
 
+
 ## Milestone 4
 
 In this section, we add two functions to parse and build the JSONObject as a stream. The method signatures are as follows,
 the code is at `src/main/java/org/json/JSONObject.java`, starting at  `line 2730` and ending at `line 2781`.
 - `public Stream<Object> toStream()`  given a `JSONObject`, turn it into a stream. Note that we used `StreamBuilder` to create
-the stream, so the return type is `Stream<Object>`. When using it, we need to cast it to `HashMap` firstly.
-- `private void streamBuilderHelper(String preKey, Object val)` given the previous path, parse and add each new object 
-of the current path into the stream builder recursively.
+  the stream, so the return type is `Stream<Object>`. When using it, we need to cast it to `HashMap` firstly.
+- `private void streamBuilderHelper(String preKey, Object val)` given the previous path, parse and add each new object
+  of the current path into the stream builder recursively.
 
-In our implementation, each element in the stream is a `HashMap<String, Object> Object`, the key is the string 
+In our implementation, each element in the stream is a `HashMap<String, Object> Object`, the key is the string
 indicating the current path of the value, and the value is the actual object correspondingly. Our function also supports
 the parsing of `JSONObject` and `JSONArray` by calling another new function recursively if needed.
 
-The related JUnit tests we wrote are located at `src/test/java/org.json.junit/JSONObjectTest.java`, starting at `line 1192` 
-and ending at `line 1258`. The static resource files for testing are at `src/test/resources/*`. All added test cases have 
+The related JUnit tests we wrote are located at `src/test/java/org.json.junit/JSONObjectTest.java`, starting at `line 1192`
+and ending at `line 1258`. The static resource files for testing are at `src/test/resources/*`. All added test cases have
 already been verified correctly.
 
 
@@ -62,6 +63,26 @@ The building framework we used is `Maven` and the build script file is located a
 
 
 *PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).- Brs, Can*
+
+
+
+
+
+## Milestone 5
+
+In this project, we add a private static class, FutureObject and toJSONObject method at `src/main/java/org.json/XML.java`. The method signatures of class are as
+follows, the code starts at `line 970` and ends at `line 998`.
+- `public static Future<JSONObject> toJSONObject(Reader reader, Function<String, String> keyTransformer, Consumer<Exception> exceptionHandler) throws Exception`
+
+The related three JUnit tests we wrote are added at `src/test/java/org.json.junit/XMLTest.java`,
+starting at `line 1264` and ending at `line 1315`. The static resource files for testing are at `src/test/resources/*`.
+All added test cases have been already been verified correctly.
+
+The function, FutureObject class is to construct Future object of JSONObject and with asynchronous call.
+Allow the client code to proceed, while specifying what to do when the JSONObject becomes available.
+
+
+The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
 
 *-----  Our README ends here  -------*
 
