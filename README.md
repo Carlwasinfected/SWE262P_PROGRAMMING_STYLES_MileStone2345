@@ -62,12 +62,6 @@ already been verified correctly.
 The building framework we used is `Maven` and the build script file is located at `src/pom.xml`.
 
 
-*PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).- Brs, Can*
-
-
-
-
-
 ## Milestone 5
 
 In this project, we add a private static class, FutureObject and toJSONObject method at `src/main/java/org.json/XML.java`. The method signatures of class are as
@@ -83,6 +77,9 @@ Allow the client code to proceed, while specifying what to do when the JSONObjec
 
 
 The building framework we use is `Maven`, so the build script file is `src/pom.xml`.
+
+
+*PS: Thank you for reviewing our work! For any issues, feel free to contact me [here](mailto:canw7@uci.edu).- Brs, Can*
 
 *-----  Our README ends here  -------*
 
